@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    text-align: center;
+    padding: 50px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.game-container {
+    display: block;
+}
+
+.word-search {
+    display: grid;
+    grid-template-columns: repeat(15, 35px);
+    grid-auto-rows: max-content;
+    gap: 3px;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+#goHome{
+    text-decoration: none;
+    position: absolute;
+    top: calc(5%);
+    right: calc(5%);
+    color: white;
+    background-color: rgba(68, 68, 255, 0.715);
+    font-family: Tahoma, sans-serif;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.236);
+    border-radius: 5px;
+}
+
+.word-search div {
+    width: 35px;
+    height: 35px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;    
+}
+
+.word-list {
+    margin-top: 20px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+.word-list div{
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    background-color: gray;
+    margin: 5px;
+    justify-content: center;
+    align-content: center;
+}
+
+.group-btn{
+    display: block;
+    position: relative;
+}
+
+.btn{
+    padding: 10px;
+    margin: 20px;
+}
+
+/* Style cho popup */
+.modal {
+    display: none; /* Ẩn popup mặc định */
+    position: fixed;
+    z-index: 1; /* Đảm bảo hiển thị trên tất cả nội dung khác */
+    left: 0;
+    top: 0;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    height: 100%; /* Chiếm toàn bộ chiều cao */
+    background-color: rgba(0, 0, 0, 0.4); /* Màn chắn tối */
+}
+
+/* Nội dung popup */
+.modal-content {
+    background-color: white;
+    margin: 15% auto; /* Đặt popup ở giữa trang */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Độ rộng popup */
+    max-width: 500px;
+}
+
+/* Nút close */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#box-text:hover{
+    background-color: #d0d9fe;
+}
+
+
+@media (max-width: 767px) {
+    .word-search div {
+        width: auto;
+        height: auto;
+    }
+}

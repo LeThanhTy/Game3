@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi Tìm Từ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <a href="../Home.php" id="goHome">Về trang chủ</a>
+        <h1>Trò Chơi Tìm Từ</h1>
+        <div id="word-list" class="word-list"></div>        
+        <div id="word-search" class="word-search"></div>
+
+
+
+        <!-- Phần tử popup -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="resultMessage"></div>
+                <div class="group-btn">
+                    <button id="replay" class="btn">Ván mới?</button>
+                    <button id="exit" class="btn">Thoát</button>               
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
