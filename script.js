@@ -1,3 +1,5 @@
+
+
 const wordList = {
     'A': [
         { name: "Accent", pronounce: "/ˈæksent/", meaning: "Giọng", type: "Noun (Danh từ)", example: "She speaks English with a French accent." },
@@ -461,321 +463,119 @@ const wordList = {
         { name: "Write", pronounce: "/raɪt/", meaning: "Viết", type: "Verb (Động từ)", example: "He likes to write in his journal every night." },
         { name: "Writer", pronounce: "/ˈraɪtə(r)/", meaning: "Nhà văn", type: "Noun (Danh từ)", example: "The writer is working on a new novel." },
         { name: "Wrong", pronounce: "/rɒŋ/", meaning: "Sai, không đúng", type: "Adj (Tính từ)", example: "You have chosen the wrong answer to the question." },
-    ], 'Y': [
+    ],
+    'Y': [
         { name: "Yacht", pronounce: "/jɒt/", meaning: "Du thuyền", type: "Noun (Danh từ)", example: "They spent the afternoon sailing on a luxurious yacht." }
     ],
-
-
 };
-
-let numberCorrect = 0;
-let numberWord = 7;
-let currentSceneIndex; // Biến để theo dõi chỉ số cảnh hiện tại
+let currentWordIndex = 0;
+let currentSceneIndex = 0; // Biến để theo dõi chỉ số cảnh hiện tại
 let currentIndex = 0; // Biến để theo dõi chỉ số từ hiện tại trong cảnh
-let manyobj = [{}];
-let words = [];
-const gridSize = 15;
-let grid = [];
-let position = [];
-let textmsg = document.getElementById("resultMessage");
-var modal = document.getElementById("myModal");
-var btn = document.getElementById("openBtn");
-var span = document.getElementsByClassName("close")[0];
-let btnReplay = document.getElementById("replay");
-let exit = document.getElementById("exit");
+let currentScene;
+let sceneList;
 
-btnReplay.addEventListener("click", function () {
-    restart();
-    initGrid();
-    placeWords();
-    fillGrid();
-    renderGrid();
-    renderWordList();
-})
-
-function getRandomScene() {
-    const regions = Object.keys(wordList);
-
-    // Chọn ngẫu nhiên 1 vùng
-    const randomRegion = regions[Math.floor(Math.random() * regions.length)];
-    return randomRegion;
-}
-
-
-/*function getRandomSomeWord() {
-    currentSceneIndex = getRandomScene();
-    let arrayWord = new Set();
-    const regions = wordList;
-    const listWord = regions[currentSceneIndex];
-    while (arrayWord.size < numberWord) {
-        let select = listWord[Math.floor(Math.random() * listWord.length)]
-        arrayWord.add(select);
+function getSequentialSceneAndWord() {
+    sceneList = Object.keys(wordList);    
+    
+    if (currentSceneIndex >= sceneList.length) {
+        currentSceneIndex = 0; // Quay lại cảnh đầu tiên
     }
 
-    let array = [];
-    let i = 0;
-    arrayWord.forEach(word =>{
-        array[i] = word.name;
-        i++;
-    })
 
-    return array;
-}*/
+    currentScene = sceneList[currentSceneIndex]; // Lấy cảnh hiện tại dựa trên chỉ số
+    const regions = wordList[currentScene]; // Lấy danh sách từ của cảnh hiện tại
 
-function getRandomSomeWord() {
+    return regions;
+}
 
-    let arrayWord = new Set();
-    const regions = wordList;
-    //const listWord = regions[currentSceneIndex];
+let words;
 
-    while (arrayWord.size < numberWord) {
-        currentSceneIndex = getRandomScene();
-        const listWord = regions[currentSceneIndex];
-        let select = listWord[Math.floor(Math.random() * listWord.length)]
-        if(select.name.length <= 15){
-            arrayWord.add(select);
-        }
+function updateCard() {
+    let index = currentWordIndex;
+    words = getSequentialSceneAndWord();
+    document.getElementById("class").textContent = "Phần " + currentScene;
+    document.getElementById("word-front").textContent = words[currentWordIndex].meaning;
+    document.getElementById("word-back").textContent = words[currentWordIndex].name;
+    document.getElementById("pronounce").textContent = words[currentWordIndex].pronounce;
+    document.getElementById("type").textContent = words[currentWordIndex].type;
+    document.getElementById("numberWord").textContent = index + 1;
+}
 
+function toggleFlip() {
+    document.querySelector(".card").classList.toggle("flipped");
+}
+
+function nextWord() {
+    if (((currentWordIndex + 1) % words.length) <= words.length) {
+        currentWordIndex = (currentWordIndex + 1) % words.length;
     }
-    return Array.from(arrayWord);
-}
-
-function convertArray(arrayObj) {
-    let words = arrayObj;
-    let i = 0;
-    let array = [];
-    words.forEach(word => {
-        array[i] = word.name;
-        i++;
-    })
-    return array;
-}
-
-
-// Initialize the grid with empty strings
-function initGrid() {
-    for (let i = 0; i < gridSize; i++) {
-        grid[i] = Array(gridSize).fill('');
+    else {
+        currentWordIndex = 0;
     }
-}
+    updateCard();
+    //let stylecard = document.getElementsByClassName("card");
+    document.querySelectorAll(".card").forEach(item => {
+        item.style.transition = 'none';
 
-
-// Place words in the grid
-function placeWords() {
-
-    words.forEach(word => {
-        let placed = false;
-        while (!placed) {
-            const direction = Math.floor(Math.random() * 3); // 0: horizontal, 1: vertical
-            const row = Math.floor(Math.random() * gridSize);
-            const col = Math.floor(Math.random() * gridSize);
-
-            if (canPlaceWord(word, row, col, direction)) {
-                for (let i = 0; i < word.length; i++) {
-                    switch (direction) {
-                        case 1:
-                            grid[row + i][col] = word[i];
-                            position.push({ name: word, row: row + i, col: col })
-                            break;
-                        case 2:
-                            grid[row + i][col + i] = word[i];
-                            position.push({ name: word, row: row + i, col: col + i })
-                            break;
-                        default:
-                            grid[row][col + i] = word[i];
-                            position.push({ name: word, row: row, col: col + i })
-                            break;
-                    }
-                    /* if (direction === 0) {
-                        grid[row][col + i] = word[i];
-                        position.push({ name: word, row: row, col: col + i })
-                    } if (direction === 1) {
-                        grid[row + i][col] = word[i];
-                        position.push({ name: word, row: row + i, col: col })
-                    } else {
-                        grid[row + i][col + i] = word[i];
-                        position.push({ name: word, row: row + i, col: col + i })
-                    }*/
-                }
-                placed = true;
-            }
-        }
     });
+    //stylecard.style.transition = 'none';
+    document.querySelector(".card").classList.remove("flipped"); // Reset về mặt trước
+
+    setTimeout(() => {
+        document.querySelectorAll(".card").forEach(item => {
+            item.style.transition = ' transform 0.5s';
+        });
+
+    }, 10);
+
 }
 
-/*// Check if the word can be placed
-function canPlaceWord(word, row, col, direction) {
-    if (direction === 0 && col + word.length > gridSize) return false; // Horizontal
-    if (direction === 1 && row + word.length > gridSize) return false; // Vertical
-
-    for (let i = 0; i < word.length; i++) {
-        if (direction === 0 && grid[row][col + i] !== '') return false; // Horizontal
-        if (direction === 1 && grid[row + i][col] !== '') return false; // Vertical
+function prevWord() {
+    if (((currentWordIndex - 1 + words.length) % words.length) <= words.length) {
+        currentWordIndex = (currentWordIndex - 1 + words.length) % words.length;
     }
-    return true;
-}*/
-
-// Check if the word can be placed
-function canPlaceWord(word, row, col, direction) {
-    if (direction === 0 && col + word.length > gridSize) return false; // Horizontal
-    if (direction === 1 && row + word.length > gridSize) return false; // Vertical
-    if (direction === 2 && (row + word.length > gridSize || col + word.length > gridSize)) return false; // Diagonal
-
-    for (let i = 0; i < word.length; i++) {
-        if (direction === 0 && grid[row][col + i] !== '') return false; // Horizontal
-        if (direction === 1 && grid[row + i][col] !== '') return false; // Vertical
-        if (direction === 2 && grid[row + i][col + i] !== '') return false; // Diagonal
+    else {
+        currentWordIndex = 0;
     }
-    return true;
-}
+    updateCard();
+    document.querySelectorAll(".card").forEach(item => {
+        item.style.transition = 'none';
 
-
-
-// Fill the remaining empty spaces with random letters
-function fillGrid() {
-    for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
-            if (grid[i][j] === '') {
-                grid[i][j] = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Random letter A-Z
-            }
-        }
-    }
-}
-
-
-// Render the word list on the page
-function renderWordList() {
-    const wordListDiv = document.getElementById('word-list');
-    wordListDiv.innerHTML = ''; // Clear previous content
-
-    words.forEach(word => {
-        const wordDiv = document.createElement('div');
-        wordDiv.textContent = word;
-        wordListDiv.appendChild(wordDiv);
     });
+    document.querySelector(".card").classList.remove("flipped"); // Reset về mặt trước
+    setTimeout(() => {
+        document.querySelectorAll(".card").forEach(item => {
+            item.style.transition = ' transform 0.5s';
+        });
+
+    }, 10);
 }
 
-// Render the grid on the page
-function renderGrid() {
-    const wordSearchDiv = document.getElementById('word-search');
-    wordSearchDiv.innerHTML = '';
+function nextChapter() {
+    currentWordIndex = 0;
 
-    for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
-            const cellDiv = document.createElement('div');
-            cellDiv.textContent = grid[i][j].toUpperCase();
-            if (grid[i][j] != '') {
-                cellDiv.id = "box-text";
-                for (let n = 0; n < position.length; n++) {
-                    if (i == position[n].row && j == position[n].col) {
-                        let wordname = position[n].name;
-                        cellDiv.setAttribute("data-name", wordname.replace(/\s+/g, ''));
-                    }
-                }
-            }
-            // Add event listener to detect when a cell is clicked
-            cellDiv.addEventListener("click", function () {
-                let rowCorrect = cellDiv.getAttribute('data-name');
-                if (rowCorrect != '' && rowCorrect != null) {
-                    let rowCell = document.querySelectorAll('[data-name="' + rowCorrect + '"]')
-                    rowCell.forEach(sameDiv => {
-                        sameDiv.style.backgroundColor = "green";
-                        sameDiv.setAttribute('data-name', '');
-                        sameDiv.removeAttribute('data-name');
-                    })
-                    numberCorrect++;
-                    textmsg.innerHTML = "Đã chọn đúng";
-                    if (numberCorrect == numberWord) {
-                        modal.style.display = 'block';
-                    };
-                }
-                else {
-                    textmsg.innerHTML = "Chưa chính xác";
+    document.querySelectorAll(".card").forEach(item => {
+        item.style.transition = 'none';
 
-                }
-
-            })
-            wordSearchDiv.appendChild(cellDiv);
-        }
-    }
-}
-
-
-
-// Render the word list on the page
-function renderWordList() {
-
-
-    const wordListDiv = document.getElementById('word-list');
-    wordListDiv.innerHTML = '';
-    let i = 0;
-    words.forEach(word => {
-        const wordDiv = document.createElement('div');
-        wordDiv.textContent = word;
-        wordDiv.setAttribute("data-name", manyobj[i].name.replace(/\s+/g, ''));
-        wordListDiv.appendChild(wordDiv);
-        i++;
     });
+    document.querySelector(".card").classList.remove("flipped"); // Reset về mặt trước
+    setTimeout(() => {
+        document.querySelectorAll(".card").forEach(item => {
+            item.style.transition = ' transform 0.5s';
+        });
+
+    }, 10);
+
+
+    if (currentSceneIndex <= sceneList.length - 1) {
+        currentSceneIndex++;
+    } else { currentSceneIndex = 0; }
+    if (currentWordIndex <= words[currentIndex].length - 1) {
+
+    } else { currentWordIndex = 0; }
+    updateCard();
 }
 
-// Check if the user has found all the words
-/*function checkAnswer() {
-    const resultMessageDiv = document.getElementById('resultMessage');
-    let isCorrect = true;
+// Khởi tạo nội dung thẻ ban đầu
+updateCard();
 
-    words.forEach(word => {
-        let found = false;
-        for (let i = 0; i < gridSize; i++) {
-            for (let j = 0; j < gridSize; j++) {
-                if (grid[i][j] === word[0]) {
-                    let match = true;
-                    for (let k = 0; k < word.length; k++) {
-                        if (i + k >= gridSize || j + k >= gridSize || grid[i + k][j + k] !== word[k]) {
-                            match = false;
-                            break;
-                        }
-                    }
-                    if (match) {
-                        found = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (!found) {
-            isCorrect = false;
-            return;
-        }
-    });
-
-    resultMessageDiv.textContent = isCorrect ? 'Bạn đã tìm thấy tất cả các từ!' : 'Bạn chưa tìm thấy tất cả các từ!';
-}*/
-
-
-function restart() {
-    numberCorrect = 0;
-    modal.style.display = '';
-    position = [{}];
-    manyobj = getRandomSomeWord();
-    words = convertArray(manyobj);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    restart();
-    initGrid();
-    placeWords();
-    fillGrid();
-    renderGrid();
-    renderWordList();
-});
-
-
-exit.onclick = function () {
-    window.location.href = "../Home.php";
-}
-
-// Khi nhấn vào nút đóng (x), ẩn popup
-span.onclick = function () {
-    modal.style.display = "none";
-    window.location.href = "../Home.php";
-}
