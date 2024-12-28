@@ -1,38 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang học từ vựng</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Search Game</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <div class="container">
-        <div class="card-container">
-            <div class="card" onclick="toggleFlip()">
-                <div class="card-front">
-                    <p id="class"></p>
-                    <p id="word-front" class="word"></p>
-                    <p id="numberWord"></p>
-                </div>
-                <div class="card-back">
-                    <p id="word-back" class="mean"></p>
-                    <p id="pronounce"></p>
-                    <p id="type"></p>
-                </div>
-            </div>
+  <h1>Word Search Game</h1>
+  <div id="game-container"></div>
+  <div id="word-list"></div>
 
-            <div class="controls">
-                <button onclick="prevWord()">Previous</button>
-                <button onclick="nextChapter()">Next Chapter</button>
-                <button onclick="nextWord()">Next</button>
-            </div>
-        </div>
-    </div>
+  <div class="overlay" id="overlay"></div>
 
-    <script src="script.js"></script>
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <h2>YOU WIN</h2>
+    <button class="btn-play" onclick="startNewGame()">Chơi mới</button>
+    <button class="btn-home" onclick="goToHomePage()">Về trang chủ</button>
+  </div>
+  <script src="script.js"></script>
 </body>
-
 </html>

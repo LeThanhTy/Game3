@@ -1,138 +1,132 @@
-/* styles.css */
-
 body {
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    background-color: #f4f4f9;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
-header {
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.popup button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.popup button:hover {
+    opacity: 0.9;
+}
+
+.btn-play {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
-    text-align: center;
 }
 
-nav a {
+.btn-home {
+    background-color: #f44336;
     color: white;
-    margin: 0 15px;
-    text-decoration: none;
 }
 
-#content {
-    padding: 20px;
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
-.section-title {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 15px;
+h1 {
+    margin: 20px 0;
 }
 
-
-#numberWord{
-    display: block;
-    position: absolute;
-    bottom: 0;
-    right: 15px;
+#game-container {
+    display: grid;
+    gap: 2px;
+    margin: 20px;
 }
 
-#class{
-    display: block;
-    position: absolute; 
-    top: 5%;
-    right: 50%;
-    transform: translate(50%, -50%)
-}
-
-.container{
+.cell {
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
-    align-content: center;
     align-items: center;
-    justify-items: center;
-    height: 100vh;
-}
-
-/* Đặt container có perspective để tạo hiệu ứng 3D */
-.card-container {
-    perspective: 1500px;
-    width: 100vh;
-    height: 600px;
-    margin-bottom: 20px;
-
-}
-
-/* Đặt thẻ chính */
-.card {
-    width: 100%;
-    height: 100%;
-    position: relative;    
-    border-radius: 10px;
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-    cursor: pointer;
-}
-
-/* Mặt trước và mặt sau của thẻ */
-.card-front, .card-back {
-    position: absolute;
-    border-radius: 10px;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: block;
-    justify-content: center;
-    align-content: center;
-    text-align: center;
-    font-size: 20px;
-    color: #fff;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    font-size: 18px;
     font-weight: bold;
-    border: 5px dashed rgba(0, 0, 0, 0.249);
+    cursor: pointer;
+    user-select: none;
 }
 
-/* Đặt màu nền cho mặt trước */
-.card-front {
-    background-color: #2e7cd0;
+.cell.selected {
+    background-color: #ffeb3b;
 }
 
-.card-front > .word{
-    font-size: 55px;
+.cell.found {
+    background-color: #c8e6c9;
+    pointer-events: none;
 }
 
-/* Mặt sau của thẻ */
-.card-back {
-    background-color: #23953e;
-    transform: rotateY(180deg);
-}
-
-.card-back > .mean{
-    font-size: 55px;
-
-}
-
-/* Thêm lớp 'flipped' để lật thẻ */
-.card.flipped {
-    transform: rotateY(180deg);
-}
-
-/* Style cho nút điều khiển */
-.controls {
+#word-list {
     display: flex;
-    gap: 10px;
     justify-content: center;
-    margin:20px;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.controls > button{
-    padding: 5px;
-    min-width: 100px;
+#word-list>div {
+    margin: 10px;
 }
 
+.word {
+    margin: 5px 0;
+}
 
-@media (max-width: 767px) {
-    .card-container{
-        width: auto;
+.found {
+
+    color: green;
+}
+
+@media (max-width: 768px) {
+    .cell {
+        width: 15px;
+        height: 15px;
+        font-size: 12px;
+    }
+
+    #word-list {
+        flex-wrap: wrap;
     }
 }
