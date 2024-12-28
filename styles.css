@@ -121,9 +121,9 @@ h1 {
 
 @media (max-width: 768px) {
     .cell {
-        width: 15px;
-        height: 15px;
-        font-size: 12px;
+        width: 10px;
+        height: 10px;
+        font-size: 8px;
     }
 
     #word-list {
