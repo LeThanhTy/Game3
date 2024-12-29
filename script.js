@@ -471,7 +471,7 @@ const wordList = {
 };
 let chapters = [];
 let manyword = [];
-let numberOfWords = 5;
+let numberOfWords = 8;
 let count = 0;
 let currentChapter = 0;
 const getRandomWords = (data, numberOfWords) => {
@@ -670,7 +670,7 @@ function resetGame() {
             grid[y][x] = "";
         }
     }
-    fetchWords();
+    //fetchWords();
     count = 0;
     selectedCells = [];
 }
