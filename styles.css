@@ -73,18 +73,18 @@ h1 {
 #game-container {
     display: grid;
     gap: 2px;
-    margin: 20px;
+    margin: 10px;
 }
 
 .cell {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
     border: 1px solid #ccc;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     user-select: none;
@@ -103,7 +103,11 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
+}
+
+#word-list > h3 {
+    margin: 0 10px;
 }
 
 #word-list>div {
@@ -111,12 +115,14 @@ h1 {
 }
 
 .word {
+    padding: 10px;
+    border-radius: 5px;
     margin: 5px 0;
 }
 
 .found {
-
-    color: green;
+    background-color: green;
+    color: rgb(248, 248, 248);
 }
 
 @media (max-width: 768px) {
@@ -126,7 +132,9 @@ h1 {
         font-size: 10px;
     }
 
+
     #word-list {
         flex-wrap: wrap;
+        font-size: 13px;
     }
 }
