@@ -70,6 +70,11 @@ h1 {
     margin: 20px 0;
 }
 
+h3{
+    margin: 0;
+    padding: 0;
+}
+
 #game-container {
     display: grid;
     gap: 2px;
@@ -103,7 +108,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 #word-list > h3 {
@@ -127,10 +132,11 @@ h1 {
 
 @media (max-width: 768px) {
     .cell {
-        width: 13px;
-        height: 13px;
+        width: 13.5px;
+        height: 13.5px;
         font-size: 10px;
     }
+
 
 
     #word-list {

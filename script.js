@@ -497,7 +497,7 @@ const getRandomWords = (data, numberOfWords) => {
 //             throw new Error('Network response was not ok');
 //         }
 //         const data = await response.json();
-        // wordList = data;
+// wordList = data;
 
 //     } catch (error) {
 //         console.error('Error fetching words:', error);
@@ -594,7 +594,7 @@ const renderGrid = () => {
 // Display the word list
 const renderWordList = () => {
     const wordList = document.getElementById("word-list");
-    wordList.innerHTML = "<h3>Words to Find:</h3>";
+    wordList.innerHTML = "";
     words.forEach((word) => {
         const wordItem = document.createElement("div");
         wordItem.textContent = word;
@@ -657,7 +657,7 @@ const checkWordSelection = () => {
         count++;
         selectedCells = [];
     }
-    if(count === numberOfWords){
+    if (count === numberOfWords) {
         showPopup();
         return;
     }
@@ -672,6 +672,7 @@ function resetGame() {
     }
     //fetchWords();
     count = 0;
+    manyword = [];
     selectedCells = [];
 }
 
@@ -690,6 +691,15 @@ function startNewGame() {
     resetGame();
     hidePopup();
     // Thêm logic chơi mới tại đây
+    chapters = Object.keys(wordList);
+    manyword = getRandomWords(wordList, numberOfWords);
+    for (i = 0; i < numberOfWords; i++) {
+        words[i] = manyword[i]['name'];
+    }
+    placeWords();
+    fillGrid();
+    renderGrid();
+    renderWordList();
 }
 
 function goToHomePage() {
